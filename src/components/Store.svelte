@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { itemsInfo, type ItemStructure } from "../lib/types";
+    import { itemsInfo, type backpackStructure, type ItemStructure, round } from "../lib/types";
 
     function getDefaultName(
         costItem: [string, any],
@@ -19,7 +19,7 @@
         Object.entries(itemToBuy[1].cost).forEach((el) => {
             let costItemKey = el[0];
             let backpackItemValue =
-                costItemKey == "coin" ? coins : items[costItemKey]?.value || 0;
+                costItemKey == "coin" ? coins : items?.[costItemKey] || 0;
             if (itemToBuy[1].cost[costItemKey] > backpackItemValue) {
                 return (can = false);
             }
@@ -29,7 +29,7 @@
     }
 
     export let coins: number;
-    export let items: ItemStructure;
+    export let items: backpackStructure;
     export let modifyBackpackItem: Function;
     export let setCoins: Function;
 </script>
@@ -37,7 +37,7 @@
 <div class="items">
     {#each Object.entries(itemsInfo) as item}
         {#if !!item[1].cost}
-            {#key item[1].value}
+            {#key items[item[0]]}
                 <div class="item">
                     <div class="top">
                         <div class="left">
@@ -46,7 +46,7 @@
                                 <div class="info">
                                     <span class="title">{item[1].title}</span>
                                     <span class="value"
-                                        >[{items[item[0]]?.value || 0}]</span
+                                        >[{round(items?.[item[0]] || 0)}]</span
                                     >
                                 </div>
                             </div>
@@ -66,14 +66,14 @@
                                             >
                                                 <div class="_icon">🪙</div>
                                                 <div class="_value">
-                                                    {costItem[1]}
+                                                    {round(costItem[1])}
                                                 </div>
                                             </div>
                                         {:else}
                                             <div
                                                 class={`cost_item ${
-                                                    (items[costItem[0]]
-                                                        ?.value || 0) >=
+                                                    (items?.[costItem[0]]
+                                                         || 0) >=
                                                     itemsInfo[item[0]].cost[
                                                         costItem[0]
                                                     ]
@@ -83,13 +83,11 @@
                                             >
                                                 <div class="_icon">
                                                     {getDefaultName(
-                                                        costItem,
-                                                        itemsInfo[costItem[0]]
-                                                            ?.hideIcon || false
+                                                        costItem,true
                                                     )}
                                                 </div>
                                                 <div class="_value">
-                                                    {costItem[1]}
+                                                    {round(costItem[1])}
                                                 </div>
                                             </div>
                                         {/if}
@@ -128,17 +126,15 @@
                             <div class="list">
                                 {#each Object.entries(item[1].produce) as ProducedItem}
                                     <div class="thing">
-                                        <span class="first"
-                                            >{ProducedItem[1][0]}
+                                        
+                                        <span class="first">{ProducedItem[1][1]}
                                             {getDefaultName(
                                                 ProducedItem,
-                                                itemsInfo[ProducedItem[0]]
-                                                    ?.hideIcon || false
-                                            )}</span
-                                        >
-                                        <span class="second"
-                                            >seconds for {ProducedItem[1][1]}</span
-                                        >
+                                                true
+                                            )} </span>
+                                        <span class="second">
+                                            za {ProducedItem[1][0]}s
+                                        </span>
                                     </div>
                                 {/each}
                             </div>

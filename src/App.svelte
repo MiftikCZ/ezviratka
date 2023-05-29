@@ -6,58 +6,33 @@
     type ItemStructure,
     type backpackStructure,
     type possibleViews,
+    round,
   } from "./lib/types";
   import pickaxe from "./assets/pickaxe.png";
   import Store from "./components/Store.svelte";
   import NavBarViews from "./components/NavBarViews.svelte";
 
   let view: possibleViews = "list-of-items";
-  let showShop: boolean = true;
+  let showShop: boolean = false;
   let coins = 0;
   let autoSaveDelay = 5000
   let canBeSavedToDb = true
-  let items: ItemStructure = parseItems({
-    backpack: {},
-  });
+  let items: backpackStructure = {}
 
   let dbLoadCache = loadFromDb()
   items = dbLoadCache.items
   coins = dbLoadCache.coins
 
-  function parseItems({
-    backpack,
-  }: {
-    backpack: backpackStructure;
-  }): ItemStructure {
-    let ret: ItemStructure = {};
-
-    Object.entries(backpack).forEach((item) => {
-      ret[item[0]] = {
-        ...(itemsInfo[item[0]] || {
-          title: item[0],
-          icon: "👽",
-          type: "material",
-        }),
-        value: item[1],
-      };
-    });
-
-    return ret;
-  }
-
   export function modifyBackpackItem(key: string, modifyBy: number) {
+    if(key == "coin") {
+      coins += modifyBy
+      return
+    }
     if (!items[key]) {
-      items[key] ||= {
-        ...(itemsInfo[key] || {
-          title: key,
-          icon: "👽",
-          type: "material",
-        }),
-        value: modifyBy,
-      };
+      items[key] ||= modifyBy
     } else {
-      items[key].value ||= 0;
-      items[key].value += modifyBy;
+      items[key] ||= 0;
+      items[key] += modifyBy;
     }
   }
 
@@ -69,21 +44,20 @@
     coins = newValue;
   }
 
-  function loadFromDb(): {items: ItemStructure,coins:number} {
+  function loadFromDb(): {items: backpackStructure,coins:number} {
     return {
       items:
-        JSON.parse(localStorage.getItem("ezk_items")),
+        JSON.parse(localStorage.getItem("ezc_items") || "{}") || {},
 
       coins:
-        parseInt(localStorage.getItem("ezk_coins")) || 0,
+        parseInt(localStorage.getItem("ezc_coins")) || 0,
     };
   }
 
   function syncSaveDb() {
     if(canBeSavedToDb) {
-      console.log("saved!")
-      localStorage.setItem("ezk_items", JSON.stringify(items));
-      localStorage.setItem("ezk_coins", coins.toString());
+      localStorage.setItem("ezc_items", JSON.stringify(items));
+      localStorage.setItem("ezc_coins", coins.toString());
     }
     canBeSavedToDb = false
   }
@@ -96,6 +70,17 @@
     syncSaveDb()
   })
 
+
+  setInterval(()=>{
+    Object.entries(items).forEach(([animalName, animalCount])=>{
+      if(itemsInfo[animalName]?.type == "animal" || false) {
+        Object.entries(itemsInfo[animalName].produce).forEach(([animalProduceItemKey,animalProduceItemCount]) => {
+          modifyBackpackItem(animalProduceItemKey,(animalProduceItemCount[1] / animalProduceItemCount[0]) * animalCount * 5)
+        })
+      }
+    })
+  },5000)
+
   setInterval(()=>{
     canBeSavedToDb = true
   },autoSaveDelay)
@@ -103,14 +88,14 @@
 
 <main>
   <div class="header">
-    <span>🪙</span> <span class="value">{coins}</span>
+    <span>🪙</span> <span class="value">{round(coins)}</span>
   </div>
   <div class="game">
     <NavBarViews {showShop} {view} />
     {#if showShop}
       <Store {coins} {items} {modifyBackpackItem} {setCoins} />
     {:else if view == "list-of-items" || view == "list-of-animals"}
-      <ListOfItems {items} />
+      <ListOfItems {modifyBackpackItem} {items} />
     {:else}{/if}
   </div>
   <div class="nav">
@@ -124,9 +109,7 @@
     </div>
 
     <input type="checkbox" id="toggle-store" bind:checked={showShop} />
-    <label for="toggle-store" class="obchod material-symbols-outlined"
-      >store</label
-    >
+    <label for="toggle-store" class="obchod material-symbols-outlined">store</label>
   </div>
 </main>
 
