@@ -1,83 +1,152 @@
 <script lang="ts">
     import { itemsInfo, type ItemStructure } from "../lib/types";
 
-
-    function getDefaultName(costItem: [string, number],hideIcon: boolean): string {
-
-        if(hideIcon) return itemsInfo[costItem[0]]?.title || costItem[0]
-        return itemsInfo[costItem[0]]?.icon || itemsInfo[costItem[0]]?.title || costItem[0]
+    function getDefaultName(
+        costItem: [string, any],
+        hideIcon: boolean
+    ): string {
+        if (costItem[0] == "coin") return "🪙";
+        if (hideIcon) return itemsInfo[costItem[0]]?.title || costItem[0];
+        return (
+            itemsInfo[costItem[0]]?.icon ||
+            itemsInfo[costItem[0]]?.title ||
+            costItem[0]
+        );
     }
 
-    function canBuy(itemToBuy: [string,ItemStructure["cs"]]) {
-        let can = true
-        Object.entries(itemToBuy[1].cost).forEach(el => {
-            let costItemKey = el[0]
-            let backpackItemValue = costItemKey == "coin" ? coins : items[costItemKey]?.value || 0
-            if(itemToBuy[1].cost[costItemKey] > backpackItemValue) {
-                return can = false
+    function canBuy(itemToBuy: [string, ItemStructure["cs"]]) {
+        let can = true;
+        Object.entries(itemToBuy[1].cost).forEach((el) => {
+            let costItemKey = el[0];
+            let backpackItemValue =
+                costItemKey == "coin" ? coins : items[costItemKey]?.value || 0;
+            if (itemToBuy[1].cost[costItemKey] > backpackItemValue) {
+                return (can = false);
             }
-        })
-        
-        return can
+        });
+
+        return can;
     }
 
-    export let coins:number;
+    export let coins: number;
     export let items: ItemStructure;
-    export let modifyBackpackItem:Function;
-    export let setCoins:Function;
+    export let modifyBackpackItem: Function;
+    export let setCoins: Function;
 </script>
 
 <div class="items">
     {#each Object.entries(itemsInfo) as item}
-        {#key item[1].value}
-            <div class="item">
-                <div class="left">
-                    <div class="row">
-                        <div class="icon">{item[1].icon || ""}</div>
-                        <div class="info">
-                            <span class="title">{item[1].title}</span>
-                            <span class="value">[{items[item[0]]?.value || 0}]</span>
+        {#if !!item[1].cost}
+            {#key item[1].value}
+                <div class="item">
+                    <div class="top">
+                        <div class="left">
+                            <div class="row">
+                                <div class="icon">{item[1].icon || ""}</div>
+                                <div class="info">
+                                    <span class="title">{item[1].title}</span>
+                                    <span class="value"
+                                        >[{items[item[0]]?.value || 0}]</span
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="row payment">
+                                <!-- <div class="title">cena:</div> -->
+
+                                <div class="cost">
+                                    {#each Object.entries(item[1].cost) as costItem}
+                                        {#if costItem[0] == "coin"}
+                                            <div
+                                                class={`cost_item ${
+                                                    coins >= costItem[1]
+                                                        ? "can"
+                                                        : ""
+                                                }`}
+                                            >
+                                                <div class="_icon">🪙</div>
+                                                <div class="_value">
+                                                    {costItem[1]}
+                                                </div>
+                                            </div>
+                                        {:else}
+                                            <div
+                                                class={`cost_item ${
+                                                    (items[costItem[0]]
+                                                        ?.value || 0) >=
+                                                    itemsInfo[item[0]].cost[
+                                                        costItem[0]
+                                                    ]
+                                                        ? "can"
+                                                        : ""
+                                                }`}
+                                            >
+                                                <div class="_icon">
+                                                    {getDefaultName(
+                                                        costItem,
+                                                        itemsInfo[costItem[0]]
+                                                            ?.hideIcon || false
+                                                    )}
+                                                </div>
+                                                <div class="_value">
+                                                    {costItem[1]}
+                                                </div>
+                                            </div>
+                                        {/if}
+                                    {/each}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right">
+                            {#key [coins, items]}
+                                <button
+                                    class={`buy ${canBuy(item) ? "can" : ""}`}
+                                    on:click={() => {
+                                        if (!canBuy(item)) return;
+                                        modifyBackpackItem(item[0], 1);
+                                        Object.entries(item[1].cost).forEach(
+                                            (costItem) => {
+                                                if (costItem[0] == "coin") {
+                                                    coins -= costItem[1];
+                                                    setCoins(coins);
+                                                    return;
+                                                }
+                                                modifyBackpackItem(
+                                                    costItem[0],
+                                                    -costItem[1]
+                                                );
+                                            }
+                                        );
+                                    }}>Kup 1</button
+                                >
+                            {/key}
                         </div>
                     </div>
-    
-                    <div class="row payment">
-                        <!-- <div class="title">cena:</div> -->
-    
-                        <div class="cost">
-                            {#each Object.entries(item[1].cost) as costItem}
-                                {#if costItem[0] == "coin"}
-                                    <div class={`cost_item ${coins >= costItem[1] ? "can" : ""}`}>
-                                        <div class="_icon">🪙</div>
-                                        <div class="_value">{costItem[1]}</div>
+                    <div class="bottom">
+                        {#if item[1].type == "animal"}
+                            <div class="title">Produkuje:</div>
+                            <div class="list">
+                                {#each Object.entries(item[1].produce) as ProducedItem}
+                                    <div class="thing">
+                                        <span class="first"
+                                            >{ProducedItem[1][0]}
+                                            {getDefaultName(
+                                                ProducedItem,
+                                                itemsInfo[ProducedItem[0]]
+                                                    ?.hideIcon || false
+                                            )}</span
+                                        >
+                                        <span class="second"
+                                            >seconds for {ProducedItem[1][1]}</span
+                                        >
                                     </div>
-                                {:else}
-                                    <div class={`cost_item ${(items[costItem[0]]?.value || 0) >= itemsInfo[item[0]].cost[costItem[0]] ? "can" : ""}`}>
-                                        <div class="_icon">{getDefaultName(costItem, itemsInfo[costItem[0]]?.hideIcon||false)}</div>
-                                        <div class="_value">{costItem[1]}</div>
-                                    </div>
-                                {/if}
-                            {/each}
-                        </div>
+                                {/each}
+                            </div>
+                        {/if}
                     </div>
                 </div>
-                <div class="right">
-                    {#key [coins, items]}
-                        <button class={`buy ${canBuy(item) ? "can" : ""}`} on:click={()=>{
-                            if(!canBuy(item)) return
-                            modifyBackpackItem(item[0], 1)
-                            Object.entries(item[1].cost).forEach(costItem => {
-                                if(costItem[0] == "coin") {
-                                    coins -= costItem[1]
-                                    setCoins(coins)
-                                    return
-                                }
-                                modifyBackpackItem(costItem[0], -costItem[1])
-                            })
-                        }}>Kup 1</button>
-                    {/key}
-                </div>
-            </div>
-        {/key}
+            {/key}
+        {/if}
     {/each}
 </div>
 
@@ -88,7 +157,6 @@
         width: 100%;
         gap: 0.1rem;
     }
-
 
     .items .item .icon {
         width: 1em;
@@ -111,8 +179,27 @@
         gap: 0.5em;
     }
 
-    .items .item .info * {
-        /* animation: updateValue 350ms forwards ease-in-out; */
+    .items .item .bottom .list {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .items .item .bottom .list .thing {
+        display: inline-block;
+        flex-direction: row;
+        background: #222;
+        width: fit-content;
+        padding: 0.25em 0.6em;
+        border-radius: 0.3em;
+    }
+
+    .items .item .bottom .list .thing .first {
+        font-weight: bold;
+        color: #e3e3e3;
+    }
+
+    .items .item .bottom .list .thing .second {
+        color: #eee8;
     }
 
     .items .item .row {
@@ -126,18 +213,21 @@
         /* height: fit-content; */
         padding: 0.5em 0.7em;
         width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
         display: flex;
+        flex-direction: column;
         border-radius: 1em;
     }
 
-
+    .items .item > .top {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
 
     .items .item .left {
         flex-direction: column;
     }
-
 
     .items .item .right .buy {
         display: flex;
@@ -153,16 +243,11 @@
         padding: 0.6em 1em;
         border-radius: 0.2em;
     }
-    
 
     .items .item .right .buy.can {
         background: #252;
         cursor: pointer;
         color: #e3e3e3;
-    }
-
-    .payment > .title {
-        color: #eee8;
     }
 
     .payment .cost {

@@ -53,11 +53,7 @@
         align-items: center;
         gap: 0.5em;
     }
-
-    .items .item .info * {
-        /* animation: updateValue 350ms forwards ease-in-out; */
-    }
-
+    
     .items .item {
         border-radius: 1em;
         gap: 0.5em;
