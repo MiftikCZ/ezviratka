@@ -20,8 +20,8 @@ export interface ItemStructure {
     }
 }
 
-export function round(num:number):number {
-    return Math.floor(num)
+export function round(num:number):string {
+    return Math.floor(num).toLocaleString()
 }
 
 function sellItems(sellFor: number, howMuchForThat: number):number {
