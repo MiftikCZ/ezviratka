@@ -11,6 +11,7 @@
   import pickaxe from "./assets/pickaxe.png";
   import Store from "./components/Store.svelte";
   import NavBarViews from "./components/NavBarViews.svelte";
+    import Coin from "./components/Coin.svelte";
 
   let view: possibleViews = "list-of-items";
   let showShop: boolean = false;
@@ -88,7 +89,7 @@
 
 <main>
   <div class="header">
-    <span>🪙</span> <span class="value">{round(coins)}</span>
+    <span><Coin /></span> <span class="value">{round(coins)}</span>
   </div>
   <div class="game">
     <NavBarViews {showShop} {view} />

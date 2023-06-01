@@ -1,5 +1,5 @@
 
-
+import coin_image from "../assets/coin.png"
 
 export type possibleViews = "list-of-items" | "list-of-animals";
 
@@ -22,7 +22,7 @@ export interface ItemStructure {
     }
 }
 
-export const coin = `<!-- https://www.flaticon.com/free-icons/coin --><img class="coin" >` 
+export const coin = `<!-- https://www.flaticon.com/free-icons/coin --><img height="32px" class="coin" href="${coin_image}" >` 
 
 export function round(num:number):string {
     return Math.floor(num).toLocaleString()

@@ -4,13 +4,15 @@
         type backpackStructure,
         type ItemStructure,
         round,
+        coin,
     } from "../lib/types";
+    import Coin from "./Coin.svelte";
 
     function getDefaultName(
         costItem: [string, any],
         hideIcon: boolean
     ): string {
-        if (costItem[0] == "coin") return "🪙";
+        if (costItem[0] == "coin") return coin;
         if (hideIcon) return itemsInfo[costItem[0]]?.title || costItem[0];
         return (
             itemsInfo[costItem[0]]?.icon ||
@@ -68,8 +70,8 @@
                                                         ? "can"
                                                         : ""
                                                 }`}
-                                            >
-                                                <div class="_icon">🪙</div>
+                                            >   
+                                                <Coin/>
                                                 <div class="_value">
                                                     {round(costItem[1])}
                                                 </div>
@@ -86,12 +88,16 @@
                                                         : ""
                                                 }`}
                                             >
+                                            {#if costItem[0] == "coin"}
+                                                <Coin />
+                                            {:else}
                                                 <div class="_icon">
-                                                    {getDefaultName(
+                                                    {@html getDefaultName(
                                                         costItem,
                                                         true
                                                     )}
                                                 </div>
+                                            {/if}
                                                 <div class="_value">
                                                     {round(costItem[1])}
                                                 </div>
@@ -134,7 +140,14 @@
                                     <div class="thing">
                                         <span class="first"
                                             >{ProducedItem[1][1]}
-                                            {getDefaultName(ProducedItem, true)}
+                                            {#if ProducedItem[0] == "coin"}
+                                                <Coin />
+                                            {:else}
+                                                {@html getDefaultName(
+                                                    ProducedItem,
+                                                    true
+                                                )}
+                                            {/if}
                                         </span>
                                         <span class="second">
                                             za {ProducedItem[1][0]}s
@@ -276,7 +289,7 @@
     }
 
     .payment .cost .cost_item ._icon {
-        height: 1em;
+        /* height: 1em; */
         /* color: #ababab; */
     }
 
