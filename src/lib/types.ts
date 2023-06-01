@@ -194,6 +194,28 @@ export const itemsInfo: ItemStructure = {
             "mouse": itemsPerSecond(120,1)
         }
     },
+    "duck": {
+        title:"kachna",
+        icon: "🦆",
+        type:"animal",
+        cost: {
+            "animal_seed": 1,
+            "water": 100,
+            "coin": 250
+        },
+        produce: {
+            "duckling": itemsPerSecond(360,1),
+        }
+    },
+    "duckling": {
+        title:"kachňátko",
+        icon: "🦆",
+        sell: sellItems(5,1),
+        type:"animal",
+        produce: {
+            "grass": itemsPerSecond(180,1),
+        }
+    },
     "mouse": {
         sell: sellItems(200,30),
         title: "myš",
@@ -243,7 +265,7 @@ export const itemsInfo: ItemStructure = {
             "fish": 5
         },
         produce: {
-            "coin": itemsPerSecond(1,1),
+            "coin": itemsPerSecond(8,1),
         }
     },
     "egg": {
@@ -280,7 +302,7 @@ export const itemsInfo: ItemStructure = {
             "coin": 400
         },
         produce: {
-            "coin": itemsPerSecond(10,1),
+            "coin": itemsPerSecond(22,1),
             "ice": itemsPerSecond(8,1)
         }
     },
@@ -292,11 +314,10 @@ export const itemsInfo: ItemStructure = {
             "animal_seed": 2,
             "water": 5,
             "seed": 10,
-            "coin": 500
+            "coin": 1500
         },
         produce: {
-            "coin": itemsPerSecond(10,1),
-            "gold": itemsPerSecond(60*10,1)
+            "gold": itemsPerSecond(60*60,1)
         }
     },
     "chicken": {
@@ -341,19 +362,33 @@ export const itemsInfo: ItemStructure = {
             "water": 10
         }
     },
+    "penguin": {
+        title: "tučňák",
+        icon: "🐧",
+        type: "animal",
+        produce: {
+            "coin": itemsPerSecond(60,1)
+        },
+        cost: {
+            "ice": 50,
+            "water": 1,
+            "animal_seed": 1,
+            "coin": 350
+        }
+    },
     "golden_pig": {
         title: "zlaté prase",
         icon: "🪙",
         type: "animal",
         produce: {
-            "coin": itemsPerSecond(9,1)
+            "coin": itemsPerSecond(1,1)
         },
         cost: {
             "iron": 1,
             "animal_seed": 3,
             "gold": 5,
             "pig": 2,
-            "coin": 100
+            "coin": 1000
         }
     },
     "iron_chicken": {
@@ -368,6 +403,19 @@ export const itemsInfo: ItemStructure = {
             "animal_seed": 3,
             "gold": 5,
             "chicken": 2,
+            "coin": 500
+        }
+    },
+    "tree_nut": {
+        title: "oříškovník",
+        icon: "🌲",
+        type: "animal",
+        produce: {
+            "nut": itemsPerSecond(60,1)
+        },
+        cost: {
+            "tree": 1,
+            "nut": 10,
             "coin": 100
         }
     },
@@ -379,5 +427,55 @@ export const itemsInfo: ItemStructure = {
             "ice": 50,
             "coin": 2000,
         }  
+    },
+    "bird_parrot": {
+        title:"papoušek",
+        icon: "🐦",
+        type:"animal",
+        cost: {
+            "animal_seed": 1,
+            "pet_license": 1,
+            "cage": 1,
+            "nut": 5,
+            "coin": 1000
+        },
+        produce: {
+            "feather": itemsPerSecond(15,1)
+        }
+    },
+    "cage": {
+        title: "klec",
+        icon: "📦",
+        type: "material",
+        cost: {
+            "iron": 3,
+            "coin": 500,
+        }  
+    },
+    "nut": {
+        title: "oříšek",
+        icon: "🌰",
+        type: "material",
+        cost: {
+            "seed": 10,
+            "grass": 1,
+            "tree": 0.5,
+            "coin": 500,
+        }  
+    },
+    "feather": {
+        sell: sellItems(20,10),
+        title: "pírko",
+        icon: "🪶",
+        type: "material"
+    },
+    "bed": {
+        title: "postel",
+        icon: "🛏️",
+        type: "material",
+        cost: {
+            "feather": 100,
+            "coin": 150   
+        }
     },
 }
