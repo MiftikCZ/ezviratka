@@ -31,7 +31,7 @@
                 </div>
                 <div class="right">
                     {#if itemsInfo[item[0]].sell && item[1] > 0}
-                        <button class="sell" on:click={()=>{sellItem(item[0])}}>Sell <div class="bubble">🪙 {round(getSellReward(item[0]))} </div></button>
+                        <button class="sell" on:click={()=>{sellItem(item[0])}}>Sell <div class="bubble"><span class="coin">🪙</span> {round(getSellReward(item[0]))} </div></button>
                     {/if}
                 </div>
             </div>
@@ -69,12 +69,23 @@
     .bubble {
         width:max-content;
         position: absolute;
+        vertical-align: middle;
+        display: flex;
+        align-items: center;
+        gap: 0.2em;
+        padding: 0 0.2em;
         border-radius: 1em;
+        font-size: 0.8em;
         background: #252e;
         color: #a5ff9a;
 
         bottom: 1.8em;
         right: 1.5em;
+    }
+
+    .bubble .coin {
+        font-size: 0.8em;
+        vertical-align: middle;
     }
 
     .items .left {
