@@ -1,7 +1,9 @@
 
+
+
 export type possibleViews = "list-of-items" | "list-of-animals";
 
-function itemsPerSecond(seconds,count):[number,number] {
+function itemsPerSecond(seconds:number,count:number):[number,number] {
     return [seconds,count]
 }
 
@@ -19,6 +21,8 @@ export interface ItemStructure {
         }
     }
 }
+
+export const coin = `<!-- https://www.flaticon.com/free-icons/coin --><img class="coin" >` 
 
 export function round(num:number):string {
     return Math.floor(num).toLocaleString()
@@ -205,7 +209,7 @@ export const itemsInfo: ItemStructure = {
         icon: "🐛",
         type: "animal",
         produce: {
-            "coin": itemsPerSecond(120,1),
+            "coin": itemsPerSecond(180,1),
             "dirt": itemsPerSecond(60,1)
         }
     },

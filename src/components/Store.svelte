@@ -1,5 +1,10 @@
 <script lang="ts">
-    import { itemsInfo, type backpackStructure, type ItemStructure, round } from "../lib/types";
+    import {
+        itemsInfo,
+        type backpackStructure,
+        type ItemStructure,
+        round,
+    } from "../lib/types";
 
     function getDefaultName(
         costItem: [string, any],
@@ -72,8 +77,8 @@
                                         {:else}
                                             <div
                                                 class={`cost_item ${
-                                                    (items?.[costItem[0]]
-                                                         || 0) >=
+                                                    (items?.[costItem[0]] ||
+                                                        0) >=
                                                     itemsInfo[item[0]].cost[
                                                         costItem[0]
                                                     ]
@@ -83,7 +88,8 @@
                                             >
                                                 <div class="_icon">
                                                     {getDefaultName(
-                                                        costItem,true
+                                                        costItem,
+                                                        true
                                                     )}
                                                 </div>
                                                 <div class="_value">
@@ -126,12 +132,10 @@
                             <div class="list">
                                 {#each Object.entries(item[1].produce) as ProducedItem}
                                     <div class="thing">
-                                        
-                                        <span class="first">{ProducedItem[1][1]}
-                                            {getDefaultName(
-                                                ProducedItem,
-                                                true
-                                            )} </span>
+                                        <span class="first"
+                                            >{ProducedItem[1][1]}
+                                            {getDefaultName(ProducedItem, true)}
+                                        </span>
                                         <span class="second">
                                             za {ProducedItem[1][0]}s
                                         </span>
@@ -170,10 +174,9 @@
 
     .items .item .info {
         font-size: 1.3em;
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
+        display: inline-block;
     }
+
 
     .items .item .bottom .list {
         display: flex;
@@ -226,9 +229,7 @@
     }
 
     .items .item .right .buy {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: inline-block;
         border: none;
         background: #222;
         color: #aeaeae;
@@ -281,5 +282,15 @@
 
     .payment .cost .cost_item ._value {
         font-weight: bold;
+    }
+
+
+    @media (max-width: 600px) {
+        .items .item .right .buy {
+            width: fit-content;
+            font-size: 1.3em;
+            padding: 0.5em 0.6em;
+            border-radius: 0.2em;
+        }
     }
 </style>
