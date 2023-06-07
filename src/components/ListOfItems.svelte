@@ -20,22 +20,24 @@
 
 <div class="items">
     {#each Object.entries(items) as item}
-        {#key item[1]}
-            <div class="item">
-                <div class="left">
-                    <div class="icon">{itemsInfo[item[0]]?.icon || " "}</div>
-                    <div class="info">
-                        <span class="title">{itemsInfo[item[0]]?.title}</span>
-                        <span class="value">{round(item[1])}</span>
+        {#if itemsInfo[item[0]]}
+            {#key item[1]}
+                <div class="item">
+                    <div class="left">
+                        <div class="icon">{itemsInfo[item[0]]?.icon || " "}</div>
+                        <div class="info">
+                            <span class="title">{itemsInfo[item[0]]?.title}</span>
+                            <span class="value">{round(item[1])}</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        {#if itemsInfo[item[0]]?.sell && item[1] > 0}
+                            <button class="sell" on:click={()=>{sellItem(item[0])}}>Sell <div class="bubble"><span class="coin">🪙</span> {round(getSellReward(item[0]))} </div></button>
+                        {/if}
                     </div>
                 </div>
-                <div class="right">
-                    {#if itemsInfo[item[0]].sell && item[1] > 0}
-                        <button class="sell" on:click={()=>{sellItem(item[0])}}>Sell <div class="bubble"><span class="coin">🪙</span> {round(getSellReward(item[0]))} </div></button>
-                    {/if}
-                </div>
-            </div>
-        {/key}
+            {/key}
+        {/if}
     {/each}
 </div>
 
@@ -55,7 +57,8 @@
         justify-content: center;
         align-items: center;
         border: none;
-        background: #522e;
+        background: #522;
+        border-bottom: #0006 0.2em solid;
         cursor: pointer;
         /* background: transparent; */
         color: #f97575;
@@ -78,8 +81,8 @@
         font-size: 0.8em;
         background: #252e;
         color: #a5ff9a;
-
-        bottom: 1.8em;
+        
+        top: -0.3em;
         right: 1.5em;
     }
 
@@ -91,6 +94,7 @@
     .items .left {
         display: flex;
         width: 100%;
+        /* flex-wrap: wrap; */
         flex-direction: row;
         gap: 0.5em;
     }
@@ -111,7 +115,7 @@
 
     .items .item .info{
         font-size: 1.3em;
-        display: flex;
+        display: inline-block;
         align-items: center;
         gap: 0.5em;
     }
