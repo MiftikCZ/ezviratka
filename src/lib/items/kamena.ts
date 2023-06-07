@@ -148,6 +148,20 @@ const _export:ItemStructure = {
             "coin": 50000
         }
     },
+    "bat": {
+        title: "netopýr",
+        icon: "🦇",
+        type: "animal",
+        sell: sellItems(8000,1),
+        produce: {
+            "coin": itemsPerSecond(1,20)
+        },
+        cost: {
+            "stone": 10,
+            "animal_seed": 1,
+            "coin": 10000
+        }
+    },
     "iron_chicken": {
         title: "železná slepice",
         icon: "🐔",
