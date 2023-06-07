@@ -7,11 +7,14 @@
     type backpackStructure,
     type possibleViews,
     round,
+    type possibleLevels,
+    levelsInfo,
   } from "./lib/types";
   import pickaxe from "./assets/pickaxe.png";
   import Store from "./components/Store.svelte";
   import NavBarViews from "./components/NavBarViews.svelte";
     import Coin from "./components/Coin.svelte";
+    import ListOfLevels from "./components/ListOfLevels.svelte";
 
   let view: possibleViews = "list-of-items";
   let showShop: boolean = false;
@@ -19,10 +22,16 @@
   let autoSaveDelay = 5000
   let canBeSavedToDb = true
   let items: backpackStructure = {}
+  let level:possibleLevels = "basic"
+  let unlockedLevels:possibleLevels[] = ["basic"]
+  let showLevelShop:boolean = false
 
   let dbLoadCache = loadFromDb()
   items = dbLoadCache.items
   coins = dbLoadCache.coins
+  level = dbLoadCache.level
+  unlockedLevels = dbLoadCache.unlockedLevels
+  if(!unlockedLevels.includes(level)) level = "basic"
 
   export function modifyBackpackItem(key: string, modifyBy: number) {
     if(key == "coin") {
@@ -45,18 +54,26 @@
     coins = newValue;
   }
 
-  function loadFromDb(): {items: backpackStructure,coins:number} {
+  function loadFromDb(): {items: backpackStructure,coins:number,level: possibleLevels, unlockedLevels: possibleLevels[]} {
     return {
       items:
         JSON.parse(localStorage.getItem("ezc_items") || "{}") || {},
 
       coins:
         parseInt(localStorage.getItem("ezc_coins")) || 0,
+
+      //@ts-ignore
+      level:
+        localStorage.getItem("ezc_level") || "basic",
+
+      unlockedLevels: JSON.parse(localStorage.getItem("ezc_levels") || '["basic"]') || ["basic"],
     };
   }
 
   function syncSaveDb() {
     if(canBeSavedToDb) {
+      localStorage.setItem("ezc_level", level);
+      localStorage.setItem("ezc_levels", JSON.stringify(unlockedLevels));
       localStorage.setItem("ezc_items", JSON.stringify(items));
       localStorage.setItem("ezc_coins", coins.toString());
     }
@@ -65,6 +82,16 @@
 
 
   $: [items, coins] && syncSaveDb();
+  $: [showLevelShop, showShop] && (()=>{
+    // if(showLevelShop) showShop = false
+    // if(showShop) showLevelShop = false
+  })();
+  $: [level] && reloadLevel()
+
+  function reloadLevel() {
+    document.body.style.setProperty("--bg-hue", levelsInfo[level].bghue.toString())
+    document.body.style.setProperty("--bg-image", levelsInfo[level].bg.toString())
+  }
 
   window.addEventListener("beforeunload", () => {
     canBeSavedToDb = true
@@ -80,24 +107,54 @@
         })
       }
     })
+
+
+    canBeSavedToDb = true
   },5000)
 
-  setInterval(()=>{
-    canBeSavedToDb = true
-  },autoSaveDelay)
+
+  // setInterval(()=>{
+  // },autoSaveDelay)
+
+  function buyLevel(whichOne: possibleLevels) {
+    if(!unlockedLevels.includes(whichOne)) {
+      unlockedLevels = [...unlockedLevels,whichOne]
+    }
+  }
+
+  function switchToLevel(newOne: possibleLevels) {
+    level = newOne
+  }
+
+  function switchLevelShopOpen() {
+    showLevelShop = !showLevelShop
+  }
+
 </script>
 
 <main>
   <div class="header">
-    <span><Coin /></span> <span class="value">{round(coins)}</span>
+    <span><Coin/></span> <span class="value">{round(coins)}</span>
   </div>
   <div class="game">
-    <NavBarViews {showShop} {view} />
-    {#if showShop}
-      <Store {coins} {items} {modifyBackpackItem} {setCoins} />
+    <NavBarViews {showShop} {showLevelShop} {buyLevel} {switchToLevel} {level} {unlockedLevels} {switchLevelShopOpen} />
+    {#if showLevelShop}
+        <ListOfLevels {setCoins} {coins} {level} {buyLevel} {switchToLevel} {unlockedLevels}/>
+    {:else if showShop}
+      <Store {coins} {items} {modifyBackpackItem} {setCoins} {level} />
     {:else if view == "list-of-items" || view == "list-of-animals"}
       <ListOfItems {modifyBackpackItem} {items} />
-    {:else}{/if}
+      {#key Object.keys(items)}
+          {#if Object.keys(items).length >= Object.keys(itemsInfo).length}
+            <div class="game-completed">
+              <h2>Gratuluji 🤝🎉</h2>
+              <p><b>Dohrál jsi e-zviratka!</b>, <i>zatím jsi odemknul všechny itemy. Ale stále se můžeš těšit na další updaty 😉</i></p>
+            </div>
+          {:else}
+            <div class="ziskano">{Object.keys(items).length} / {Object.keys(itemsInfo).length} získáno</div>
+          {/if}
+      {/key}
+    {/if}
   </div>
   <div class="nav">
     <!-- https://www.flaticon.com/free-icons/pickaxe -->
@@ -115,6 +172,19 @@
 </main>
 
 <style>
+  :root {
+    --bg-hue: 111;
+    --bg-image: url(https://lorem.picsum/200);
+  }
+
+  :global(body) {
+    image-rendering: pixelated;
+    background: var(--bg-image) center repeat;
+    background-size: 100px 100px;
+    background-color: #3e583a;
+    image-orientation: 90deg;
+  }
+
   main > .header {
     width: 100%;
     padding: 0.5em;
@@ -137,7 +207,7 @@
     position: relative;
     padding: 1rem;
     border-radius: 1rem;
-    background: #0002;
+    background: hsl(var(--bg-hue), 21%, 25%);
     height: 100%;
     max-height: calc(100vh - 9em);
     overflow: auto;
@@ -230,4 +300,15 @@
     to {
     }
   }
+
+  .game-completed {
+    text-align: center;
+  }
+
+  :global(.ziskano) {
+        width: 100%;
+        text-align: center;
+        color: #bebebe;
+        text-shadow: #222a 2px 2px 2px;
+    } 
 </style>
