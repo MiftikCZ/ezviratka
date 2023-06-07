@@ -1,6 +1,7 @@
 <script lang="ts">
     import { coin } from "../lib/types"
     import coin_img from "../assets/coin.png"
+
 </script>
 <!-- https://www.flaticon.com/free-icons/coin -->
 <div class="container">
@@ -17,6 +18,7 @@
     }
 
     img.coin {
+        image-rendering: optimizeSpeed;
       height: 1em;
       width: 1em;
       vertical-align: middle;
