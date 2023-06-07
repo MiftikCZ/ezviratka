@@ -11,15 +11,11 @@
     import Coin from "./Coin.svelte";
 
     function getDefaultName(
-        costItem: [string, any],
-        hideIcon: boolean
+        costItem: [string, any]
     ): string {
         if (costItem[0] == "coin") return coin;
-        if (hideIcon) return itemsInfo[costItem[0]]?.title || costItem[0];
         return (
-            itemsInfo[costItem[0]]?.icon ||
-            itemsInfo[costItem[0]]?.title ||
-            costItem[0]
+            itemsInfo[costItem[0]]?.title || costItem[0]
         );
     }
 
@@ -84,9 +80,7 @@
                                                 class={`cost_item ${
                                                     (items?.[costItem[0]] ||
                                                         0) >=
-                                                    itemsInfo[item[0]].cost[
-                                                        costItem[0]
-                                                    ]
+                                                        item[1].cost[costItem[0]]
                                                         ? "can"
                                                         : ""
                                                 }`}
@@ -96,8 +90,7 @@
                                             {:else}
                                                 <div class="_icon">
                                                     {@html getDefaultName(
-                                                        costItem,
-                                                        true
+                                                        costItem
                                                     )}
                                                 </div>
                                             {/if}
@@ -147,8 +140,7 @@
                                                 <Coin />
                                             {:else}
                                                 {@html getDefaultName(
-                                                    ProducedItem,
-                                                    true
+                                                    ProducedItem
                                                 )}
                                             {/if}
                                         </span>
