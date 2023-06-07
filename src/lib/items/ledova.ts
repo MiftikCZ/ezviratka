@@ -37,7 +37,7 @@ const _export: ItemStructure = {
       "coin": m*8.5,
     },
     produce: {
-      "coin": itemsPerSecond(1, m/28),
+      "coin": itemsPerSecond(1, m/30),
       "ice": itemsPerSecond(25, 1),
     },
   },
@@ -61,7 +61,7 @@ const _export: ItemStructure = {
     icon: "🐧",
     type: "animal",
     produce: {
-      "coin": itemsPerSecond(1,m/18),
+      "coin": itemsPerSecond(1,m/40),
     },
     cost: {
       "ice": 50,
@@ -80,7 +80,7 @@ const _export: ItemStructure = {
       "coin": m*15,
     },
     produce: {
-      "coin": itemsPerSecond(1, m/14),
+      "coin": itemsPerSecond(1, m/24),
       "ice": itemsPerSecond(8, 1),
     },
   },
@@ -106,7 +106,7 @@ const _export: ItemStructure = {
       "coin": m*25,
     },
     produce: {
-      "coin": itemsPerSecond(1, m/13)
+      "coin": itemsPerSecond(1, m/20)
     },
   },
 };

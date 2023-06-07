@@ -107,7 +107,7 @@ const _export:ItemStructure = {
             "coin": 45000
         },
         produce: {
-            "coin": itemsPerSecond(1,40)
+            "coin": itemsPerSecond(1,35)
         }
     },
     "bird_vrabec": {
