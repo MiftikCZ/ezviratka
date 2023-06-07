@@ -5,6 +5,8 @@
         type ItemStructure,
         round,
         coin,
+        type possibleLevels,
+        levelsInfo,
     } from "../lib/types";
     import Coin from "./Coin.svelte";
 
@@ -35,6 +37,7 @@
         return can;
     }
 
+    export let level: possibleLevels;
     export let coins: number;
     export let items: backpackStructure;
     export let modifyBackpackItem: Function;
@@ -42,7 +45,7 @@
 </script>
 
 <div class="items">
-    {#each Object.entries(itemsInfo) as item}
+    {#each Object.entries(levelsInfo[level].items) as item}
         {#if !!item[1].cost}
             {#key items[item[0]]}
                 <div class="item">
@@ -127,7 +130,7 @@
                                                 );
                                             }
                                         );
-                                    }}>Kup 1</button
+                                    }}>Kup {canBuy(item) ? "1" : "0"}</button
                                 >
                             {/key}
                         </div>
@@ -139,7 +142,7 @@
                                 {#each Object.entries(item[1].produce) as ProducedItem}
                                     <div class="thing">
                                         <span class="first"
-                                            >{ProducedItem[1][1]}
+                                            >{round(ProducedItem[1][1])}
                                             {#if ProducedItem[0] == "coin"}
                                                 <Coin />
                                             {:else}
@@ -150,7 +153,7 @@
                                             {/if}
                                         </span>
                                         <span class="second">
-                                            za {ProducedItem[1][0]}s
+                                            za {round(ProducedItem[1][0])}s
                                         </span>
                                     </div>
                                 {/each}
@@ -255,6 +258,7 @@
     }
 
     .items .item .right .buy.can {
+        border-bottom: #0206 0.2em solid;
         background: #252;
         cursor: pointer;
         color: #e3e3e3;
@@ -306,4 +310,5 @@
             border-radius: 0.2em;
         }
     }
+
 </style>
