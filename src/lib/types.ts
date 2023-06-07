@@ -5,6 +5,8 @@ import kacheniItems from "./items/kacheni";
 import kamenaItems from "./items/kamena";
 import ledovaItems from "./items/ledova";
 import mikroItems from "./items/mikro";
+import vodniItems from "./items/vodni";
+import dzungleItems from "./items/dzungle";
 
 import kamena_doby_bg from "../assets/doby_bgs/kamena.png"
 
@@ -61,6 +63,20 @@ export const levelsInfo: levelsStructure = {
     bg: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABgklEQVRYR82XO27CQBCG7QuAoojWRYSQKLgBJV2uk9wiB4iUy9BRpaKwhCIKJCoURQZRJxlLY+2u5+X1GuHOZmbnm38eNvly/vSbDXS9zBZZdb1mH8c9GyG3AMBBcL3ttp1Q0U+CEAHeV891wK/DQc2EI9NUMAFc/mV83aw7ZY/GADAtiow7QwTQnK1EqORnWbb6QQXQmsiFGD9OWkzV96l+xvVRMgAqONIgBKVYUoCH8ciL8VOdm3sOwgPALFzZrCUA3xAAoyMIBUECgCMYUyPE1bI3gNRA7kjVcMR2SwLgSgiyuZJpW40DkOSHZJoShAeEADDL0kLqPQUSQKqFJI6hBmCdBut2RDuyBG7dtNp3DRjaewDhj9wo9g3q+qubkBu7VBD3CzB07VtN6Ep6q+DeIrKs29i6S59lXg8Mlbm0RRuAoYKDaiaAWHktfuYSWA6LsZHUNf0xiX3ThY1NLTUVAINTn1vau54a7RDiZgBc6e4fAMj79oDUuKoCMV3fxecPIPZx8H/Up+oAAAAASUVORK5CYII=)`,
     cost: E(1.5,6),
     items: mikroItems
+  },
+  "vodni": {
+    bghue: 220,
+    title: "vodní liga",
+    bg: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACVklEQVRYR72WO0sDQRDH92KihiQq2AgWWopfQ8RCAhYBNRaiSApBgr2lNmIjdkGwtU5ABLGwtLGUlIIELLTwRdTExMzCHHN7+7zEbHOPmd3/b2Z3Z9dbWr9rs05r/LzDQ9kSgxmtParRAwCTOA7+HxDe4uoNz4BL6xaEBqwFKG58s+OzIRc2Z18fAMSwgSh+9wUAxLLZLKtUKqEISuej/F+9/uUcnU0HL7d5y9dAYeXV9wdR/EYANEYFSSaHpTw+AFqbvwnfcXvtmYkAUbOhBMA6YEpXfKBhcrGy0wChA68DVj07Tr2A6ArAFtTFz5iB+udTaLxkasJFQ+trDTCzdcUHqp7OMxmAbTmHMWglDVRCWYmFDID45PQkqz3UQgAuwrJUaEtxs/HJ+8zt3/MnAsQTqd5Nge4wAgAxelDuCwBGLwLYiovTqZoq6RSI4hD19d4sT7sJwHRUiyCBXQBGmbhu7nWCdAvTnRO4D9BKiB0w7XThwbtq/5diJ6zQ2gksTNw9+FO1ff0MUHHoRLedThxsAAANIPAdhQ+Wx3wwGQQHkInTeTdVPhBtfXywWDrNn9imymX2mM8zEYIG5C3kLvhhhJUOIncRt8kAjglrSZwSDiCKyypeYIKFD9kaABe6DlQQXvFyt41G20Ung1Ed1e9vL6Hs0kx4h9UjPgUYNQ6eGRnXBe1kk0GgJgeg4t0Kq+6MtL6AOGY9AKCqcuJ9LurFFITFQmcF4JRvC2d6yPFFCH2gSJjqvMXYUhexXNPd4dcBWhzgvduLBoxhc04Yr2RRo7bt9wfqyW0QNx5JogAAAABJRU5ErkJggg==)`,
+    cost: E(2.5,6),
+    items: vodniItems
+  },
+  "dzungle": {
+    bghue: 130,
+    title: "džungle",
+    bg: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADUUlEQVRoQ+2av2sUURDHL3BGPAsVbIKNIKJVMBwoRK5QDFr4P4SUYiNaaG+joGBjLSnSWIqCEiGdoBCj6ezsbARtPFEPlJljltnZN2/mPXdvXXCbxby3876f+fXe3jp35PrC716Hr7kuAGxf2kEX37xxC+8vV14ULi8BDA4NioHxl3HvwuZF/Pfd+3fwPny+1EqssgBA6fLj0T8BEPNaEQHuffkARCPlitlKseNZFwGsBT2GQJhlJ0U8nxtb/z8A91RrEYiF35s+raZQbm7K55qIgOXA2jeyOiAs0dxxtQOQcQny8OgJHFpcvIb30ZMrpQCmiM4COPfqoJppW8tf1TEC0QDOPJuvPBuzJyerEYgJtmrGK8C7RsxeBcBr1IKAcQsktFa/30fTk8mktIRmKxlg/2Bf78fPX72983twgW/j71EWC4I/TEAEQWMcRtozAUCwvAgAxPPxEEwKQAxGgzABZCpcfrdQRODpqU+4Jk8FCeQFALuhC5zFLwIhu8ltNARAC4Ry2gIICeeiIVUpsrw+GgHwFDbNkcKlp6nGYD5EmtcHj0JtEbB2YL5RcfHS2yQ45AwZYYgCAmyvruP83d0HeF/bmb6Dhq5QClniwQ4AkPCQt6meYlF0A1z9+AHthLb3XIDzWwfQJomXKZKSfnxuJYXkiz2fTOLhbyCAvGZFQBPv8boFlgVA3vMANCke4LIBuPdCESDhobQJeV7a8J5Ok7qQtgfwxblwKT6WMjMBWHlzGFOS5z/lqNbXZbppOT0zAClI6+kECnerWHPFB2sgVvUQAd7++Nyc9qh1r5RfBJNqQAPgx2uPx2FOrPU2CqBFaPP0Z6tll8br+ikzKQJ8I9OK2UvRGgC1xlAnqkM82PDuAclFDA/E3gc8ANaxI0U8Ahy/faz0icky0CSAtXao+CsA5EXNGAfwdhwemb/J/dCzKoAG0jkACcJfSrzHBFkbWhSsFMqKAF+cFrCi8Ghp+jGQfgcdrq+ae4AlXtv8zBSKAdBeIGvBArC61fvhPZzydmMD72snp6+4tUWAt1OCsA5slmg+PjMAWJTOQXUCaLDBCNCXemuDAaOePE3xdB1zi7OQ/Co/en22Yr9TAG39t4LUqCSdRlONz2J+5wH+AI/YR2f8dM8fAAAAAElFTkSuQmCC)`,
+    cost: E(4,6),
+    items: dzungleItems
   }
   //"kacheni": {
   //   bghue:190,
@@ -109,4 +125,7 @@ export const itemsInfo: ItemStructure = {
   ...levelsInfo.basic.items,
   ...levelsInfo.kamena.items,
   ...levelsInfo.ledova.items,
+  ...levelsInfo.micro_animals.items,
+  ...levelsInfo.vodni.items,
+  ...levelsInfo.dzungle.items,
 };
