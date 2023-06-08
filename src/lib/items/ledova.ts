@@ -12,7 +12,7 @@ const _export: ItemStructure = {
     type: "material",
     cost: {
       "ice": 50,
-      "coin": m*10,
+      "coin": m*11,
     },
   },
   "ice": {
@@ -34,7 +34,7 @@ const _export: ItemStructure = {
     cost: {
       "animal_seed": 1,
       "water": 3,
-      "coin": m*8.5,
+      "coin": m*9,
     },
     produce: {
       "coin": itemsPerSecond(1, m/30),
@@ -49,7 +49,7 @@ const _export: ItemStructure = {
       "animal_seed": 1,
       "chicken": 1,
       "egg": 200,
-      "coin": m*8,
+      "coin": m*12,
     },
     produce: {
       "coin": itemsPerSecond(1, m/30),
@@ -67,7 +67,7 @@ const _export: ItemStructure = {
       "ice": 50,
       "water": 1,
       "animal_seed": 1,
-      "coin": m*9,
+      "coin": m*10.1,
     },
   },
   "tulen": {
@@ -77,7 +77,7 @@ const _export: ItemStructure = {
     cost: {
       "animal_seed": 1,
       "penguin": 2,
-      "coin": m*15,
+      "coin": m*16,
     },
     produce: {
       "coin": itemsPerSecond(1, m/24),
@@ -93,7 +93,7 @@ const _export: ItemStructure = {
       "ice": 15,
       "water": 10,
       "fire": 1,
-      "coin": m*13
+      "coin": m*14
     }
   },
   "polar_bear": {

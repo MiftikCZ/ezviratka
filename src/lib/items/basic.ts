@@ -101,7 +101,7 @@ const _export:ItemStructure = {
         icon: "🐭",
         type: "animal",
         produce: {
-            "worm": itemsPerSecond(60,1)
+            "worm": itemsPerSecond(75,1)
         }
     },
     "worm": {
@@ -111,8 +111,8 @@ const _export:ItemStructure = {
         icon: "🐛",
         type: "animal",
         produce: {
-            "coin": itemsPerSecond(180,1),
-            "dirt": itemsPerSecond(60,1)
+            "coin": itemsPerSecond(360,1),
+            "dirt": itemsPerSecond(70,1)
         }
     },
     "poop": {
