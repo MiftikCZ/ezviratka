@@ -167,7 +167,7 @@ const _export:ItemStructure = {
         icon: "🐔",
         type: "animal",
         produce: {
-            "iron": itemsPerSecond(10,1)
+            "iron": itemsPerSecond(60*60,1)
         },
         cost: {
             "iron": 1,
