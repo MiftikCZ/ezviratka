@@ -234,6 +234,7 @@
   }
 
   .nav .obchod {
+    overflow:hidden;
     position: relative;
     flex-shrink: 0;
     right: 0;
